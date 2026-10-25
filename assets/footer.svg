@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="120" viewBox="0 0 880 120" role="img" aria-label="Thanks for visiting">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#071513"/>
+    <stop offset="1" stop-color="#030908"/>
+  </linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#16362f" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#0a1d19" stop-opacity=".85"/>
+  </linearGradient>
+  <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5ff2c0" stop-opacity=".7"/>
+    <stop offset=".5" stop-color="#1f6f5b" stop-opacity=".25"/>
+    <stop offset="1" stop-color="#5ff2c0" stop-opacity=".55"/>
+  </linearGradient>
+  <radialGradient id="aura" cx=".85" cy=".1" r=".8">
+    <stop offset="0" stop-color="#2dd4a7" stop-opacity=".22"/>
+    <stop offset="1" stop-color="#2dd4a7" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="aura2" cx=".05" cy="1" r=".7">
+    <stop offset="0" stop-color="#14b88a" stop-opacity=".16"/>
+    <stop offset="1" stop-color="#14b88a" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="3" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+    <path d="M28 0H0V28" fill="none" stroke="#1d4a40" stroke-opacity=".28" stroke-width="1"/>
+  </pattern>
+
+<linearGradient id="wv" x1="0" x2="1"><stop offset="0" stop-color="#5ff2c0" stop-opacity="0"/><stop offset=".5" stop-color="#5ff2c0" stop-opacity=".9"/><stop offset="1" stop-color="#5ff2c0" stop-opacity="0"/></linearGradient>
+</defs>
+<style>.m{font-family:'JetBrains Mono','Fira Code','SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;}</style>
+<path fill="none" stroke="url(#wv)" stroke-width="1.6" filter="url(#glow)">
+<animate attributeName="d" dur="6s" repeatCount="indefinite"
+values="M0 40 C 180 10, 300 70, 440 40 S 700 10, 880 40;M0 40 C 180 70, 300 10, 440 40 S 700 70, 880 40;M0 40 C 180 10, 300 70, 440 40 S 700 10, 880 40"/></path>
+<path fill="none" stroke="url(#wv)" stroke-width="1" stroke-opacity=".45">
+<animate attributeName="d" dur="8s" repeatCount="indefinite"
+values="M0 46 C 200 76, 320 16, 440 46 S 680 76, 880 46;M0 46 C 200 16, 320 76, 440 46 S 680 16, 880 46;M0 46 C 200 76, 320 16, 440 46 S 680 76, 880 46"/></path>
+<text x="440.0" y="94" text-anchor="middle" class="m" font-size="14" letter-spacing="3" fill="#7fb8a8">
+<tspan fill="#5ff2c0">&lt;/&gt;</tspan>  THANKS FOR STOPPING BY  <tspan fill="#3b6b5f">·</tspan>  LET'S BUILD SOMETHING  <tspan fill="#5ff2c0">_</tspan></text>
+</svg>
