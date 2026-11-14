@@ -39,8 +39,35 @@ const christian: Developer = {
   <img src="./assets/architecture.svg" alt="Frontend + Backend + Database = Full Stack" width="100%" />
 </p>
 
-<!-- ───────────────────────── 03 TOOLBOX ───────────────────────── -->
-<img src="./assets/h-toolbox.svg" alt="03 // Toolbox" width="100%" />
+<!-- ───────────────────────── 03 PROJECTS ───────────────────────── -->
+<img src="./assets/h-projects.svg" alt="03 // Featured project" width="100%" />
+
+<p align="center">
+  <a href="https://happyfeetevents.com">
+    <img src="./assets/project-happy-feet.svg" alt="Happy Feet Events — Organizer Dashboard (happyfeetevents.com)" width="100%" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://happyfeetevents.com"><img src="https://img.shields.io/badge/visit-happyfeetevents.com-0B1F1A?style=for-the-badge&logo=googlechrome&logoColor=5FF2C0&labelColor=0B1F1A&color=145C49" alt="Visit happyfeetevents.com" /></a>
+  <a href="./assets/projects/happy-feet-dashboard.jpg"><img src="https://img.shields.io/badge/full_screenshot-view-0B1F1A?style=for-the-badge&logo=googlephotos&logoColor=5FF2C0&labelColor=0B1F1A&color=145C49" alt="View full screenshot" /></a>
+</p>
+
+<!-- ───────────────────────── 04 CERTIFICATES ───────────────────────── -->
+<img src="./assets/h-certificates.svg" alt="04 // Certificates" width="100%" />
+
+<p align="center">
+  <a href="./assets/certificates/google-cloud-gen-ai-academy-apac-2026.pdf">
+    <img src="./assets/cert-gcp-gen-ai-academy.svg" alt="Certificate of Participation — Google Cloud Gen AI Academy APAC 2026, Cohort 3 Ideathon (Google Cloud × Hack2skill)" width="100%" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="./assets/certificates/google-cloud-gen-ai-academy-apac-2026.pdf"><img src="https://img.shields.io/badge/certificate-view_PDF-0B1F1A?style=for-the-badge&logo=googlecloud&logoColor=5FF2C0&labelColor=0B1F1A&color=145C49" alt="View certificate PDF" /></a>
+</p>
+
+<!-- ───────────────────────── 05 TOOLBOX ───────────────────────── -->
+<img src="./assets/h-toolbox.svg" alt="05 // Toolbox" width="100%" />
 
 <p align="center">
   <a href="https://skillicons.dev">
@@ -115,8 +142,8 @@ const christian: Developer = {
   </tr>
 </table>
 
-<!-- ───────────────────────── 04 TELEMETRY ───────────────────────── -->
-<img src="./assets/h-telemetry.svg" alt="04 // GitHub telemetry" width="100%" />
+<!-- ───────────────────────── 06 TELEMETRY ───────────────────────── -->
+<img src="./assets/h-telemetry.svg" alt="06 // GitHub telemetry" width="100%" />
 
 <p align="center">
   <img src="https://streak-stats.demolab.com/?user=ChanCrits&hide_border=true&background=0B1F1A&ring=5FF2C0&fire=5FF2C0&currStreakNum=EAFFF7&currStreakLabel=5FF2C0&sideNums=EAFFF7&sideLabels=7FB8A8&dates=5F9283&stroke=1F4D42" alt="GitHub streak" />
@@ -134,8 +161,8 @@ const christian: Developer = {
   </picture>
 </p>
 
-<!-- ───────────────────────── 05 CONNECT ───────────────────────── -->
-<img src="./assets/h-connect.svg" alt="05 // Connect" width="100%" />
+<!-- ───────────────────────── 07 CONNECT ───────────────────────── -->
+<img src="./assets/h-connect.svg" alt="07 // Connect" width="100%" />
 
 <p align="center">
   <a href="https://christian-earl-siong-portfolio.vercel.app/"><img src="https://img.shields.io/badge/Portfolio-0B1F1A?style=for-the-badge&logo=googlechrome&logoColor=5FF2C0" alt="Portfolio" /></a>
