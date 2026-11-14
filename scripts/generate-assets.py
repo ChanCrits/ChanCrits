@@ -231,14 +231,130 @@ values="M0 46 C 200 76, 320 16, 440 46 S 680 76, 880 46;M0 46 C 200 16, 320 76, 
     write("footer.svg", svg)
 
 
+
+# ---------------------------------------------------------------- embedded images
+def embed(path, width):
+    """Downscale a repo image and return it as a base64 data URI (SVGs in READMEs can't load external files)."""
+    import base64, io
+    from PIL import Image
+    im = Image.open(path).convert("RGB")
+    im = im.resize((width, round(width * im.size[1] / im.size[0])), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=80, optimize=True)
+    return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode(), im.size
+
+
+def chips(items, x, y, max_w, size=12):
+    out, cx, cy = [], x, y
+    for it in items:
+        w = len(it) * size * .62 + 22
+        if cx + w > x + max_w:
+            cx, cy = x, cy + 32
+        out.append(f'<g transform="translate({cx:.1f},{cy})"><rect width="{w:.1f}" height="24" rx="12" fill="#5ff2c0" fill-opacity=".08" stroke="#5ff2c0" stroke-opacity=".45"/>'
+                   f'<text x="{w / 2:.1f}" y="16" text-anchor="middle" class="m" font-size="{size}" fill="#bfeee0">{escape(it)}</text></g>')
+        cx += w + 8
+    return "".join(out)
+
+
+# ---------------------------------------------------------------- project showcase
+def project(name, src, url, title, blurb, features):
+    W = 880
+    shot_w = W - 40
+    uri, (iw, ih) = embed(src, 1100)
+    shot_h = round(shot_w * ih / iw)
+    top = 58
+    info_y = top + shot_h + 44
+    H = info_y + 128
+    lines = "".join(f'<text x="34" y="{info_y + 30 + k * 21}" class="s" font-size="14.5" fill="#a9c9bf">{escape(l)}</text>'
+                    for k, l in enumerate(blurb))
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{escape(title)} — {escape(url)}">
+<defs>{DEFS}
+<clipPath id="shot"><rect x="20" y="{top}" width="{shot_w}" height="{shot_h}" rx="10"/></clipPath>
+<linearGradient id="glare" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#eafff7" stop-opacity=".10"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<style>.m{{font-family:{MONO};}} .s{{font-family:{SANS};}}</style>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#bg)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#grid)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#aura)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+<circle cx="30" cy="29" r="6" fill="#ff5f57"/><circle cx="50" cy="29" r="6" fill="#febc2e"/><circle cx="70" cy="29" r="6" fill="#28c840"/>
+<rect x="250" y="15" width="380" height="28" rx="14" fill="#0c211d" stroke="#1f4d42"/>
+<path d="M268 30v-3a4 4 0 0 1 8 0v3" fill="none" stroke="#5ff2c0" stroke-width="1.5"/><rect x="266" y="29" width="12" height="9" rx="2" fill="#5ff2c0"/>
+<text x="290" y="34" class="m" font-size="13" fill="#7fb8a8">https://<tspan fill="#eafff7">{escape(url)}</tspan></text>
+<g transform="translate({W - 104},17)"><rect width="80" height="24" rx="12" fill="#5ff2c0" fill-opacity=".12" stroke="#5ff2c0" stroke-opacity=".6"/>
+<circle cx="16" cy="12" r="4" fill="#5ff2c0"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>
+<text x="47" y="16.5" text-anchor="middle" class="m" font-size="11" font-weight="700" letter-spacing="2" fill="#5ff2c0">LIVE</text></g>
+<image x="20" y="{top}" width="{shot_w}" height="{shot_h}" href="{uri}" xlink:href="{uri}" clip-path="url(#shot)" preserveAspectRatio="xMidYMid slice"/>
+<g clip-path="url(#shot)"><rect x="-300" y="{top}" width="260" height="{shot_h}" fill="url(#glare)" transform="skewX(-18)">
+<animate attributeName="x" values="-300;{W + 300};{W + 300}" keyTimes="0;.45;1" dur="6s" repeatCount="indefinite"/></rect></g>
+<rect x="20" y="{top}" width="{shot_w}" height="{shot_h}" rx="10" fill="none" stroke="#5ff2c0" stroke-opacity=".35"/>
+<rect x="34" y="{info_y - 20}" width="44" height="2.5" rx="1" fill="#5ff2c0" filter="url(#glow)"/>
+<text x="34" y="{info_y + 4}" class="s" font-size="21" font-weight="700" fill="#eafff7">{escape(title)}</text>
+{lines}
+{chips(features, 34, info_y + 70, W - 68)}
+</svg>'''
+    write(name, svg)
+
+
+# ---------------------------------------------------------------- certificate card
+def certificate(name, src, kicker, title, subtitle, issuer, issued, cred_id, skills):
+    W, H = 880, 320
+    iw = 352
+    uri, (ew, eh) = embed(src, 720)
+    ih = round(iw * eh / ew)
+    ix, iy = 24, (H - ih) // 2
+    tx = ix + iw + 34
+    tlines = "".join(f'<text x="{tx}" y="{78 + k * 30}" class="s" font-size="23" font-weight="700" fill="#eafff7">{escape(l)}</text>'
+                     for k, l in enumerate(title))
+    ty = 78 + len(title) * 30
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Certificate: {escape(" ".join(title))} — {escape(issuer)}">
+<defs>{DEFS}
+<clipPath id="cert"><rect x="{ix}" y="{iy}" width="{iw}" height="{ih}" rx="10"/></clipPath>
+<linearGradient id="glare" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<style>.m{{font-family:{MONO};}} .s{{font-family:{SANS};}}</style>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#bg)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#grid)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="url(#aura)"/>
+<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+<rect x="{ix - 6}" y="{iy - 6}" width="{iw + 12}" height="{ih + 12}" rx="14" fill="none" stroke="#5ff2c0" stroke-opacity=".35" filter="url(#glow)"/>
+<image x="{ix}" y="{iy}" width="{iw}" height="{ih}" href="{uri}" xlink:href="{uri}" clip-path="url(#cert)"/>
+<g clip-path="url(#cert)"><rect x="-200" y="{iy}" width="120" height="{ih}" fill="url(#glare)" transform="skewX(-18)">
+<animate attributeName="x" values="-200;{ix + iw + 200};{ix + iw + 200}" keyTimes="0;.4;1" dur="5s" repeatCount="indefinite"/></rect></g>
+<g transform="translate({tx},28)"><rect width="{len(kicker) * 8.6 + 40}" height="22" rx="11" fill="#5ff2c0" fill-opacity=".1" stroke="#5ff2c0" stroke-opacity=".5"/>
+<path d="M12 7l2 4 4 .5-3 3 .8 4-3.8-2-3.8 2 .8-4-3-3 4-.5z" fill="#5ff2c0" transform="translate(-1,-1) scale(.85)"/>
+<text x="26" y="15.5" class="m" font-size="11" letter-spacing="1.6" fill="#5ff2c0">{escape(kicker)}</text></g>
+{tlines}
+<text x="{tx}" y="{ty + 2}" class="s" font-size="14.5" fill="#a9c9bf">{escape(subtitle)}</text>
+<text x="{tx}" y="{ty + 32}" class="m" font-size="12.5" fill="#7fb8a8"><tspan fill="#3b6b5f">issuer</tspan><tspan x="{tx + 66}">{escape(issuer)}</tspan></text>
+<text x="{tx}" y="{ty + 53}" class="m" font-size="12.5" fill="#7fb8a8"><tspan fill="#3b6b5f">issued</tspan><tspan x="{tx + 66}">{escape(issued)}</tspan></text>
+<text x="{tx}" y="{ty + 74}" class="m" font-size="11" fill="#5f9283"><tspan fill="#3b6b5f">id</tspan><tspan x="{tx + 66}">{escape(cred_id)}</tspan></text>
+{chips(skills, tx, ty + 94, W - tx - 24)}
+</svg>'''
+    write(name, svg)
+
 terminal()
 architecture()
 for i, (n, l) in enumerate([
     ("h-about.svg", "about me"),
     ("h-architecture.svg", "how i build"),
+    ("h-projects.svg", "featured project"),
+    ("h-certificates.svg", "certificates"),
     ("h-toolbox.svg", "toolbox"),
     ("h-telemetry.svg", "github telemetry"),
     ("h-connect.svg", "connect"),
 ], 1):
     header(n, l, i)
 footer()
+
+project("project-happy-feet.svg", "assets/projects/happy-feet-dashboard.jpg", "happyfeetevents.com",
+        "Happy Feet Events — Organizer Dashboard",
+        ["An all-in-one workspace for running events: publish events, track registrations,",
+         "collect payments, and sell merch, with live reports for every peso that comes in."],
+        ["Event management", "Registrations", "Online payments", "Merch store", "Orders & pickup", "Income reports"])
+certificate("cert-gcp-gen-ai-academy.svg", "assets/certificates/google-cloud-gen-ai-academy-apac-2026.jpg",
+            "CERTIFICATE · 2026",
+            ["Google Cloud Gen AI", "Academy APAC 2026"],
+            "Cohort 3 Ideathon · Certificate of Participation",
+            "Google Cloud × Hack2skill", "02/11/2026", "2026H2S09GCGENAIAPACC3I-P01300",
+            ["AI Agents", "Cloud Run", "Gen AI", "Deployment"])
